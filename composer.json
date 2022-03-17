@@ -1,0 +1,20 @@
+{
+    "name": "steampixel/simple-php-components",
+    "description": "This is a very simple and puristic PHP template rendering engine.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Steampixel",
+            "email": "info@steampixel.de",
+            "homepage": "https://steampixel.de/"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+      "psr-0": {
+          "Steampixel": "src/"
+      }
+  }
+}
