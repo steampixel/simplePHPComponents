@@ -1,7 +1,7 @@
-# Simple PHP Components
+# Simple PHP Components 🧱
 Hey! This is a simple, puristic and small PHP template rendering engine that comes without any parsing or extra templating language. Build simple templates or complex themes with pure PHP. This concept just works by gluing strings together. That means there is no complex parsing method that will eat up RAM or CPU. That makes this rendering approach extremely fast.
 
-## Features
+## 🧰 Features
 * Organize your components inside a clean folder structure
 * A component can be a layout, a page or a single content
 * Easy reuse of components
@@ -13,7 +13,7 @@ Hey! This is a simple, puristic and small PHP template rendering engine that com
 * Superfast: No caching needed
 * No extra templating language required
 
-## Simple example:
+## 📋 Simple example:
 ```php
 <?PHP
 // Require the class
@@ -35,7 +35,7 @@ Component::create('content/hero')
   ->print();
 ```
 
-## Define your own component files
+## 🧱 Define your own component files
 Defining your own components is easy. In this example we will render a hero component including a title and an optional subtitle.
 Just create a .php file inside your custom components folder or wherever you want: `components/custom/content/hello.php`
 ```php
@@ -56,7 +56,7 @@ Then you can easily render your component:
 Component::create('content/hello')->print();
 ```
 
-## Installation using Composer
+## 🎶 Installation using Composer
 Just run `composer require steampixel/simple-php-components`
 Then add the autoloader to your project like this:
 ```php
@@ -73,7 +73,7 @@ Component::addFolder('components/default');
 Component::create('layouts/default/footer')->print();
 ```
 
-## Test setup with Docker
+## 🚢 Test setup with Docker
 I have created a little Docker test setup.
 
 1. Build the image: `docker build -t simplephpcomponents docker/image-php-7.4.1`
@@ -82,7 +82,7 @@ I have created a little Docker test setup.
 
 3. Open your browser and navigate to http://localhost
 
-## Alternative print mehthods
+## 🖨 Alternative print mehthods
 There are various ways you can print the components content to your website:
 
 You can use for example the build in `print()` method:
@@ -104,7 +104,7 @@ $html = Component::create('partials/footer')->render();
 echo $html;
 ```
 
-## Push props to components
+## ⇶ Push props to components
 With assign() you can push various kind of properties to component instances. So you can easily recycle and reuse your components.
 ```php
 <?PHP
@@ -135,7 +135,7 @@ Component::create('content/text')
   ->print();
 ```
 
-## Specify, require and verify component props
+## 🚦 Specify, require and verify component props
 Every component can optionally require and verify props. If the prop is then missing or if the type is wrong, the component will throw an error.
 Check out this example in: `components/custom/content/hero.php`:
 ```php
@@ -183,21 +183,21 @@ As you can see, there is a props section at the top of the file. By calling `$th
 
 Also, the title prop is required for rendering the component. If you do not `assign()` the title prop, the component will throw an error. As you can see, the subtitle prop is optional. The markup for this will only be rendered if it is defined. You can also drop the `required` option to make the property optional.
 
-## Nested components
+## 📩 Nested components
 It is possible to nest your components. This is really important. Because you don't want to have a single huge monolithic component. So the advice is to split it down in several chunks. In this way you are also able to override every subcomponent later with plugins. Just call `Component::create('component/name')->print();` inside your components.
 
-## Component folder structure
+## 📂 Component folder structure
 It's up to you how you want to organize your components. But I would recommend having
 * contents - reusable content modules
 * layouts - reusable page layouts
 * pages - a page is a component that utilizes a layout and pushes contents to it
 * partials - For example, a button that is used inside contents or layouts
 
-## Add more component folders and extend single components
+## 🚧 Add more component folders and extend single components
 You can have more than one component folder. Use `Component::addFolder('components/custom');` to add more folders. For example, a plugin could add its own folder.
 The sequence of the defined folders is critical. The engine will search in the first folders first. This is important to know if you want to extend a theme, for example.
 
-## Extend, override and manipulate existing components with own components.
+## 🏗 Extend, override and manipulate existing components with own components.
 You can easily modify existing components without touching them. Just create a second folder containing your own components. If you want to extend existing components, you have to add your folder BEFORE the other components' folder! Then just copy the file you want to extend together with its containing folder structure to your own components' folder.
 
 For example, if you want to modify the title of your page copy the file `components/default/layouts/default/title.php` to `components/custom/layouts/default/title.php`. Then load your custom folder inside your app with `Component::addFolder('components/custom');`.
@@ -222,9 +222,9 @@ With the second parameter of the `create()` method, you can specify from which c
 ### Modify props of existing components
 You can easily modify props of the original components within your own component extension file. Take a look at the file `components/custom/layout/default/title.php` This file will receive the original title, will prepend a text to it, and then pushes this modified property to the original file.
 
-## Can I use blocks, as in many other templating engines?
+## ❓ Can I use blocks, as in many other templating engines?
 No, this is not possible. Blocks inside of components would require a complex parsing logic. And I want to keep this as simple as possible.
 Instead, my advice is to split a huge component in smaller ones. So you can address and extend its parts by other components.
 
-## License
+## 📃 License
 This project is licensed under the MIT License. See LICENSE for further information.
