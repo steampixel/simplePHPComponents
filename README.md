@@ -35,40 +35,25 @@ Component::create('content/hero')
   ->print();
 ```
 
-## Define component files
+## Define your own component files
 Defining your own components is very easy. In this example we will render a hero component including a title and an optional subtitle.
-file: `components/custom/content/hero.php`
+Just create a .php file inside your custom components folder or wherever you want: `components/custom/content/hello.php`
 ```php
-<?PHP
-
-  // Get and verify the component props
-  $title = $this->prop('title', [
-    'type' => 'string',
-    'required' => true
-  ]);
-
-  $subtitle = $this->prop('subtitle',[
-    'type' => 'string',
-    'required' => false
-  ]);
-
-?>
 
 <section class="hero is-medium is-primary is-bold">
   <div class="hero-body">
     <div class="container">
       <h1 class="title">
-        <?=$title ?>
+        Hello World
       </h1>
-      <?PHP if($subtitle) { ?>
-        <h2 class="subtitle">
-          <?=$subtitle ?>
-        </h2>
-      <?PHP } ?>
     </div>
   </div>
 </section>
 
+```
+Then you can easily render your component:
+```php
+Component::create('content/hello')->print();
 ```
 
 ## Installation using Composer
@@ -98,9 +83,9 @@ I have created a little Docker test setup.
 3. Open your browser and navigate to http://localhost
 
 ## Alternative print mehthods
-There are various ways you can print the rendered HTML to your website.
+There are various ways you can print the components content to your website:
 
-So you can use for example the build in `print()` method:
+You can use for example the build in `print()` method:
 ```php
 <?PHP
 Component::create('partials/footer')->print();
@@ -120,7 +105,7 @@ echo $html;
 ```
 
 ## Push props to components
-You can push various kind of props to component instances. So you can easily recycle and reuse your components.
+With assign() you can push various kind of props to component instances. So you can easily recycle and reuse your components.
 ```php
 <?PHP
 
@@ -156,14 +141,17 @@ Check out this example in: `components/custom/content/hero.php`:
 ```php
 <?PHP
 
+// This prop is required
 $title = $this->prop('title', [
   'type' => 'string',
   'required' => true
 ]);
 
+// This prop is optional with a default value
 $subtitle = $this->prop('subtitle',[
   'type' => 'string',
-  'required' => false
+  'required' => false,
+  'default' => 'hello world'
 ]);
 
 ?>
@@ -184,17 +172,52 @@ $subtitle = $this->prop('subtitle',[
 </section>
 
 ```
-As you can see there is a props section at the top of the file. By calling `$this->prop('prop_name')` the component will get a component prop. Optionally you can specify the type and requirement of the prop. In the above case both props are of the type `string`. If you try to push an `int` to the title for example an exception will be thrown. Just drop the `type` to avoid the type check.
+As you can see there is a props section at the top of the file. By calling `$this->prop('prop_name')` the component will retrieve a component prop. Optionally you can specify the type and requirement of the prop. In the above case both props are of the type `string`. If you try to push an `int` to the title for example an exception will be thrown. Just drop the `type` to avoid the type check.
 
-Also the title prop is required for rendering the component. If you do not `assign()` the title prop the component will throw an error. As you can see the subtitle prop is optional. The markup for this will only be rendered if it is defined. You can also drop the `required` flag to make the property optional.
+Also the title prop is required for rendering the component. If you do not `assign()` the title prop the component will throw an error. As you can see the subtitle prop is optional. The markup for this will only be rendered if it is defined. You can also drop the `required` option to make the property optional.
 
 ## Nested components
-It is possible to nest your components. This is realy important. Because you don't want to have a single huge monolithic component. So the advice is to split it down in several chunks. In this way you are also able to override every ub component separately later.
+It is possible to nest your components. This is realy important. Because you don't want to have a single huge monolithic component. So the advice is to split it down in several chunks. In this way you are also able to override every sub component later with plugins. Just call `Component::create('component/name')->print();` inside your components.
 
 ## Component folder structure
-Its up to you how you want to organise your components.
+Its up to you how you want to organise your components. But I would recommend to have
+* contents - reusable content modules)
+* layouts - reusable page layouts
+* pages - a page is a component that utilizes a layout and pushes contents to it
+* partials - For example a button that is used inside contents or layouts
 
 ## Add more component folders and extend single components
+You can have more than one componet folder. Use `Component::addFolder('components/custom');` to add more folders. For example a plugin could add its own folder.
+The sequence of the defined folders is very important. The engine will search in the first folders first. This is important to knwo, if you want to extend a theme for example.
+
+## Extend, override and manipulate existing components with own components.
+You can easily modify existing components without touching them. Yust create a second folder containing your own components. If you want to extend existing components you have to add your folder BEFORE the other components folder! Than just copy the file you want to extend together with its containing folder structure to your own components folder.
+
+For example if you want to modify the title of your page copy the file `components/default/layouts/default/title.php` to `components/custom/layouts/default/title.php`. Then load your custom folder inside your app with `Component::addFolder('components/custom');`.
+
+Now if a component with the name `layouts/default/title` will be created, the engine will find your component first.
+
+Now you have several options.
+
+### Override existing components
+Overriding components is very easy. Just copy the component to your custom folder and do what your want inside this new component file.
+
+### Inherit from existing components
+Inside your own custom component file you can call the original component and thereby inherit its contents. This is usefull if you for example want to add just a text snippet or if you want to wrap it inside an aditional container. Take a look at the file `custom/default/content.php` This will override the original one from the default folder. But it will load the original file inside itself and so add a text to it with:
+```php
+
+Component::create('layouts/default/content', 'components/default')
+->assign(['title' => $title, 'subtitle' => $subtitle, 'contents' => $contents])
+->print();
+```
+With the second parameter of the `create()` method you can specify from wich components folder you want to load the component. So you can still access and print the original one.
+
+### Modify props of existing components
+You can easily modify props of the original components within your own component extension file. Take a look at the file `components/custom/layout/default/title.php` This file will recive the original title, will prepend an text to ist, and then pushes this modified property to the original file.
+
+## Can I use blocks as in other engines?
+No this is not possible. Blocks inside of components would require a complex parsing logic. And I want to keep this as simple as possible.
+Instead my advice is to split a huge component in smaller ones. So you can address and extend its parts by other components.
 
 ## License
 This project is licensed under the MIT License. See LICENSE for further information.

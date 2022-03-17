@@ -71,6 +71,7 @@ class Component {
 
 		}
 
+		// Check if the prop is required
 		if(isset($options['required'])&&$options['required']) {
 			if($return_prop===NUll) {
 				throw new \Exception('The prop "'.$prop_name.'" is required for rendering the component "'.$this->name.'"!');
