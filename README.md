@@ -78,7 +78,7 @@ I have created a little Docker test setup.
 
 1. Build the image: `docker build -t simplephpcomponents docker/image-php-7.4.1`
 
-2. Spin up a container: `docker run -d -p 80:80 -v $pwd:/var/www/html --name simplephpcomponents simplephpcomponents`
+2. Spin up a container: `docker run -d -p 80:80 -v $(pwd):/var/www/html --name simplephpcomponents simplephpcomponents`
 
 3. Open your browser and navigate to http://localhost
 
