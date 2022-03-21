@@ -1,5 +1,5 @@
 # Simple PHP Components 🧱
-Hey! This is a simple, puristic and small PHP template rendering engine that comes without any parsing or extra templating language. Build simple templates or complex themes with pure PHP. This concept just works by gluing strings together. That means there is no complex parsing method that will eat up RAM or CPU. That makes this rendering approach extremely fast.
+Hey! This is a simple, puristic and small single class PHP template rendering engine that comes without any parsing or extra templating language. Build simple templates or complex themes with pure PHP. This concept just works by gluing strings together. That means there is no complex parsing method that will eat up RAM or CPU. That makes this rendering approach extremely fast.
 
 ## 🧰 Features
 * Organize your components inside a clean folder structure
