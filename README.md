@@ -82,7 +82,7 @@ I have created a little Docker test setup.
 
 3. Open your browser and navigate to http://localhost
 
-## 🖨 Alternative print mehthods
+## 🖨 Alternative print methods
 There are various ways you can print the components content to your website:
 
 You can use for example the build in `print()` method:
